@@ -38,7 +38,7 @@ class CustomerController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(@PathVariable id: String, @RequestBody customer:PutCustomerRequest){
-         customers.filter { it.id == id }.first().let {
+        customers.first { it.id == id }.let {
              it.name = customer.name
              it.email = customer.email
          }
