@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.*
 class CustomerController(
         val customerService: CustomerService
 ) {
-
-
     @GetMapping
-    fun getAll(@RequestParam name: String?): List<CustomerModel> {
-        return customerService.getAll(name)
+    fun getAll(@RequestParam nome: String?): List<CustomerModel> {
+        return customerService.getAll(nome)
     }
 
     @PostMapping

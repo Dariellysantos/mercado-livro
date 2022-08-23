@@ -8,15 +8,11 @@ import org.springframework.stereotype.Service
 class CustomerService(
         val customerRepository: CustomerRepository
 ) {
-
-    val customers = mutableListOf<CustomerModel>()
-
-
     fun getAll(nome: String?): List<CustomerModel> {
         nome?.let {
-            return customers.filter { it.nome.contains(nome, true) }
+            return customerRepository.findByNomeContaining(it)
         }
-        return customers
+        return customerRepository.findAll().toList()
     }
 
     fun create(customer: CustomerModel) {
@@ -24,17 +20,26 @@ class CustomerService(
     }
 
     fun getCustomer(id: Int): CustomerModel {
-        return customers.first { it.id == id }
+        return customerRepository.findById(id).orElseThrow()
     }
 
     fun update(customer: CustomerModel) {
-        customers.first { it.id == customer.id }.let {
-            it.nome = customer.nome
-            it.email = customer.email
+
+        if (!customerRepository.existsById(customer.id!!)){
+            throw Exception()
         }
+            customerRepository.save(customer)
     }
 
     fun delete(id: Int) {
-        customers.removeIf() { it.id == id }
+
+        if (!customerRepository.existsById(id)){
+            throw Exception()
+        }
+
+        customerRepository.deleteById(id)
     }
 }
+
+
+
